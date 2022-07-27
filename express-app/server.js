@@ -2,6 +2,9 @@ const express = require('express')
 const md5 = require('md5');
 const random = require('random-name');
 const { v4: uuidv4 } = require('uuid');
+const {encryptPlainText} =require('../express-app/utils/secure')
+
+
 const app = express()
 const port = 3000
 
@@ -16,6 +19,11 @@ app.get('/mdfive', (req, res) => {
 
 app.get('/uuidtest', (req, res) => {
   res.send(uuidv4())
+})
+
+
+app.get('/importtest', (req, res) => {
+  res.send(encryptPlainText("tst"))
 })
 
 
