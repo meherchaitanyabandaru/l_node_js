@@ -13,6 +13,9 @@ const router = new express.Router();
  * /posts:
  *   post:
  *     summary: Create a new Post.
+ *     description: this is used to insert a new post into db.
+ *     requestBody:
+ *          required: true 
  *     responses:
  *       201:
  *         description: Created
@@ -71,7 +74,7 @@ router.get('/posts', async (req, res) => {
  * @swagger
  * /posts/{id}:
  *   get:
- *     summary: Retrieve a single JSONPlaceholder user.
+ *     summary: fetch the post by id.
  *     description: Retrieve a single JSONPlaceholder user. Can be used to populate a user profile when prototyping or testing an API.
  *     parameters:
  *       - in: path
@@ -82,7 +85,7 @@ router.get('/posts', async (req, res) => {
  *           type: string
  *     responses:
  *       200:
- *         description: Pet updated.
+ *         description: record fetched.
  */
 
 router.get('/posts/:id', async (req, res) => {
@@ -100,6 +103,48 @@ router.get('/posts/:id', async (req, res) => {
     res.status(500).send();
   }
 });
+
+
+/**
+ * @swagger
+ * /posts/{id}:
+ *   patch:
+ *     summary: update the record.
+ *     description: Retrieve a single JSONPlaceholder user. Can be used to populate a user profile when prototyping or testing an API.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: Numeric ID of the user to retrieve.
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *     responses:
+ *       200:
+ *         description: record updated.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                     postname:
+ *                       type: string
+ *                       description: post name.
+ *                       example: my post title
+ *                     postdescription:
+ *                       type: string
+ *                       description: The post description.
+ *                       example: my sample post description
+ *                     postedby:
+ *                       type: string
+ *                       description: The posted by.
+ *                       example: MEHAR BANDARU
+ */
 
 router.patch('/posts/:id', async (req, res) => {
   req.body.postupdatedon=timestamp('YYYY/MM/DD:mm:ss').toString();
