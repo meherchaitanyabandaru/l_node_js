@@ -12,6 +12,7 @@ const router = new express.Router();
  * @swagger
  * /posts:
  *   post:
+ *     "tags": ["Posts"]
  *     summary: Create a new Post.
  *     description: this is used to insert a new post into db.
  *     requestBody:
@@ -56,6 +57,7 @@ router.post('/posts', async (req, res) => {
  *  @swagger
  *  /posts:
  *  get:
+ *     "tags": ["Posts"]
  *     description: "it will fetch all the posts information"
  *     responses:
  *        '200':
@@ -74,6 +76,7 @@ router.get('/posts', async (req, res) => {
  * @swagger
  * /posts/{id}:
  *   get:
+ *     "tags": ["Posts"]
  *     summary: fetch the post by id.
  *     description: Retrieve a single JSONPlaceholder user. Can be used to populate a user profile when prototyping or testing an API.
  *     parameters:
@@ -109,6 +112,7 @@ router.get('/posts/:id', async (req, res) => {
  * @swagger
  * /posts/{id}:
  *   patch:
+ *     "tags": ["Posts"]
  *     summary: update the record.
  *     description: Retrieve a single JSONPlaceholder user. Can be used to populate a user profile when prototyping or testing an API.
  *     parameters:
@@ -174,6 +178,7 @@ router.patch('/posts/:id', async (req, res) => {
  * @swagger
  * /posts/{id}:
  *   delete:
+ *     "tags": ["Posts"]
  *     summary: it will delete the post.
  *     description: Retrieve a single JSONPlaceholder user. Can be used to populate a user profile when prototyping or testing an API.
  *     parameters:
