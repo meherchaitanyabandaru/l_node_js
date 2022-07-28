@@ -36,10 +36,10 @@ router.post('/login', async (req, res) => {
     if (!user[0]?.email) {
       res.status(404).send({'Error-Message': 'invalid credentials'});
     } else {
-      const token = jwt.sign({email: user[0]?.email, password: user[0]?.password}, 'shhhhh');
+      const token = jwt.sign({email: user[0]?.email, password: user[0]?.password}, 'shhhhh', {expiresIn: '15s'});
       const authenticationResponse={
         'authenticationStatus': true,
-        'BearerToken': token,
+        'Access-Token': token,
       };
       res.status(200).send(authenticationResponse);
     }
@@ -47,5 +47,23 @@ router.post('/login', async (req, res) => {
     res.status(400).send(e);
   }
 });
+
+router.post('/verifyToken', async (req, res) => {
+  const token = req.body.token;
+  console.log(token);
+  try {
+    const verifiedToken = jwt.verify(token, 'shhhhh');
+    if (verifiedToken?.email) {
+      const tokenVerificationStatus={
+        'isTokenValid': true,
+        'Access-Token': token,
+      };
+      res.status(200).send(tokenVerificationStatus);
+    }
+  } catch (e) {
+    res.status(400).send(e);
+  }
+});
+
 
 module.exports = router;
