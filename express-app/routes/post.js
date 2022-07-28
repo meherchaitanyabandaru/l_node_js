@@ -84,6 +84,7 @@ router.get('/posts', async (req, res) => {
  *       200:
  *         description: Pet updated.
  */
+
 router.get('/posts/:id', async (req, res) => {
   const _id = req.params.id;
 
@@ -122,6 +123,25 @@ router.patch('/posts/:id', async (req, res) => {
     res.status(400).send(e);
   }
 });
+
+
+/**
+ * @swagger
+ * /posts/{id}:
+ *   delete:
+ *     summary: it will delete the post.
+ *     description: Retrieve a single JSONPlaceholder user. Can be used to populate a user profile when prototyping or testing an API.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: Numeric ID of the user to retrieve.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: post deleted.
+ */
 
 router.delete('/posts/:id', async (req, res) => {
   try {

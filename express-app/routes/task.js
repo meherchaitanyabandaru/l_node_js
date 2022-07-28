@@ -2,6 +2,32 @@ const express = require('express');
 const Task = require('../models/task');
 const router = new express.Router();
 
+
+// Routes
+
+/**
+ * @swagger
+ * /tasks:
+ *   post:
+ *     summary: Create a new task.
+ *     responses:
+ *       201:
+ *         description: Created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                     description:
+ *                       type: string
+ *                       description: task description.
+ *                       example: my description sowmya chappidi
+ *                     completed:
+ *                       type: Boolean
+ *                       description: complete status.
+ *                       example: true
+*/
+
 router.post('/tasks', async (req, res) => {
   const task = new Task(req.body);
 
@@ -13,6 +39,17 @@ router.post('/tasks', async (req, res) => {
   }
 });
 
+
+// Routes
+/**
+ *  @swagger
+ *  /tasks:
+ *  get:
+ *     description: "it will fetch all the tasks information"
+ *     responses:
+ *        '200':
+ *          description: "success"
+*/
 router.get('/tasks', async (req, res) => {
   try {
     const tasks = await Task.find({});
@@ -21,6 +58,25 @@ router.get('/tasks', async (req, res) => {
     res.status(500).send();
   }
 });
+
+
+/**
+ * @swagger
+ * /tasks/{id}:
+ *   get:
+ *     summary: Retrieve a single JSONPlaceholder user.
+ *     description: Retrieve a single JSONPlaceholder user. Can be used to populate a user profile when prototyping or testing an API.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: Numeric ID of the user to retrieve.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Pet updated.
+ */
 
 router.get('/tasks/:id', async (req, res) => {
   const _id = req.params.id;
@@ -59,6 +115,25 @@ router.patch('/tasks/:id', async (req, res) => {
     res.status(400).send(e);
   }
 });
+
+
+/**
+ * @swagger
+ * /tasks/{id}:
+ *   delete:
+ *     summary: it will delete the task.
+ *     description: Retrieve a single JSONPlaceholder user. Can be used to populate a user profile when prototyping or testing an API.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: Numeric ID of the user to retrieve.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: task deleted.
+ */
 
 router.delete('/tasks/:id', async (req, res) => {
   try {
