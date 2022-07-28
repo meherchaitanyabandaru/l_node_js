@@ -21,6 +21,7 @@
     "mongoose": "^6.5.0",
     "nodemon": "^2.0.19",
     "random-name": "^0.1.2",
+    "time-stamp": "^2.2.0",
     "uuid": "^8.3.2",
     "validator": "^13.7.0"
   },

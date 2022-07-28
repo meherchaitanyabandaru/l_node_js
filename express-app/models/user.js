@@ -38,6 +38,11 @@ const User = mongoose.model('User', {
       }
     },
   },
+  city: {
+    type: String,
+    required: true,
+    trim: true,
+  },
 });
 
 module.exports = User;

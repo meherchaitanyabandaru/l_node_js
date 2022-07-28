@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 require('./db/mongoose');
 const userRouter = require('./routes/user');
 const taskRouter = require('./routes/task');
+const postRouter = require('./routes/post');
 
 const app = express();
 const port = 3000;
@@ -23,7 +24,7 @@ app.get('/', (req, res) => {
 app.use(express.json());
 app.use(userRouter);
 app.use(taskRouter);
-
+app.use(postRouter);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
