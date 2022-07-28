@@ -21,7 +21,11 @@ const swaggerOptions = {
     info: {
       title: 'My Express API',
       version: '1.0.0',
-      name: 'MEHAR BANDARU',
+      contact: {
+        name: 'Mehar Bandaru',
+        email: '',
+        url: 'https://www.linkedin.com/in/mehar-chaithanya-bandaru-15b81b105?originalSubdomain=in',
+      },
     },
   },
   // eslint-disable-next-line max-len
@@ -31,7 +35,6 @@ const swaggerOptions = {
 
 const swaggerDocs= swaggerJsdoc(swaggerOptions);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
-
 
 
 // Bind connection to error event (to get notification of connection errors)

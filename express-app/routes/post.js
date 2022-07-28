@@ -128,6 +128,20 @@ router.get('/posts/:id', async (req, res) => {
  *              application/json:
  *                  schema:
  *                      type: object
+ *                      properties:
+ *                            postname:
+ *                               type: string
+ *                               description: post name.
+ *                               example: my post title
+ *                            postdescription:
+ *                               type: string
+ *                               description: The post description.
+ *                               example: my sample post description
+ *                            postedby:
+ *                               type: string
+ *                               description: The posted By.
+ *                               example: MEHAR BANDARU
+ * 
  *     responses:
  *       200:
  *         description: record updated.
