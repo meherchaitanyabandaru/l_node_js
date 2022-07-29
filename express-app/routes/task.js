@@ -53,29 +53,51 @@ router.post('/tasks', async (req, res) => {
  *          description: "success"
 */
 
+//server side pagination-------BEGIN
+router.get('/tasks', paginatedResults(Task),(req, res) => {
+	res.json(res.paginatedResults)
+})
+
+function paginatedResults(model){
+	return (req, res, next) => {
+	const page = parseInt(req.query.page)
+	const limit = parseInt(req.query.limit)
+	
+	const startIndex = (page - 1)* limit
+	const endIndex = page * limit
+	
+	const results = {}
+	
+	if (endIndex < model.length){
+		results.next = {
+		page: page + 1,
+		limit: limit
+		}
+	}
+	
+	if (startIndex > 0){
+		results.previous = {
+		page: page - 1,
+		limit: limit
+		}
+	}
+	
+	results.results = model.slice(startIndex, endIndex)
+	
+	res.paginatedResults = results
+	next()
+	}
+}
+//Server side pagination----END
+
 router.get('/tasks', async (req, res) => {
   try {
-	let {page,size} = req.query
-	if (!page){
-		page=1
-	}
-	if (!size){
-		size=5
-	}
-	
-	const limit = parseInt(size);
-	const skip = (page - 1)* size;
-	
-   // const tasks = await Task.find({}, {}, {limit: limit, skip:skip});
-	const tasks = await Task.find().limit(limit).skip(skip);
-    res.send({
-      page, size, data: tasks
-    });
+    const tasks = await Task.find({});
+    res.send(tasks);
   } catch (e) {
     res.status(500).send();
   }
 });
-
 
 /**
  * @swagger
