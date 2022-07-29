@@ -52,10 +52,25 @@ router.post('/tasks', async (req, res) => {
  *        '200':
  *          description: "success"
 */
+
 router.get('/tasks', async (req, res) => {
   try {
-    const tasks = await Task.find({});
-    res.send(tasks);
+	let {page,size} = req.query
+	if (!page){
+		page=1
+	}
+	if (!size){
+		size=5
+	}
+	
+	const limit = parseInt(size);
+	const skip = (page - 1)* size;
+	
+   // const tasks = await Task.find({}, {}, {limit: limit, skip:skip});
+	const tasks = await Task.find().limit(limit).skip(skip);
+    res.send({
+      page, size, data: tasks
+    });
   } catch (e) {
     res.status(500).send();
   }
