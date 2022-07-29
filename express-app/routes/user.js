@@ -1,7 +1,8 @@
+/* eslint-disable max-len */
 const express = require('express');
 const User = require('../models/user');
 const router = new express.Router();
-
+const bcrypt = require('bcryptjs');
 
 // Routes
 
@@ -42,6 +43,9 @@ const router = new express.Router();
 */
 
 router.post('/users', async (req, res) => {
+  const salt=await bcrypt.genSaltSync(10);
+  const hashedPassword= await bcrypt.hashSync(req.body.password, salt);
+  req.body.password=hashedPassword;
   const user = new User(req.body);
 
   try {

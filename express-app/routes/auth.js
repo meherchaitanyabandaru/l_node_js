@@ -3,6 +3,7 @@ const express = require('express');
 const User = require('../models/user');
 const router = new express.Router();
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 
 // Routes
 
@@ -31,9 +32,13 @@ const jwt = require('jsonwebtoken');
 */
 
 router.post('/login', async (req, res) => {
-  const user = await User.find(req.body);
+  const user = await User.find({email: req.body.email});
+  let isValidPassword=null;
+  if (user[0]?.password) {
+    isValidPassword = bcrypt.compareSync(req?.body?.password, user[0]?.password);
+  }
   try {
-    if (!user[0]?.email) {
+    if (!user[0]?.email || !isValidPassword) {
       res.status(404).send({'Error-Message': 'invalid credentials'});
     } else {
       const token = jwt.sign({email: user[0]?.email, password: user[0]?.password}, 'shhhhh', {expiresIn: '15s'});
@@ -50,7 +55,6 @@ router.post('/login', async (req, res) => {
 
 router.post('/verifyToken', async (req, res) => {
   const token = req.body.token;
-  console.log(token);
   try {
     const verifiedToken = jwt.verify(token, 'shhhhh');
     if (verifiedToken?.email) {
