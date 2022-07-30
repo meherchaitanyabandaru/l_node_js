@@ -53,13 +53,13 @@ router.post('/tasks', async (req, res) => {
  *          description: "success"
 */
 
-//server side pagination-------BEGIN
+//server side pagination for get all tasks-------BEGIN
 router.get('/tasks', paginatedResults(Task),(req, res) => {
 	res.json(res.paginatedResults)
 })
 
 function paginatedResults(model){
-	return (req, res, next) => {
+	return async (req, res, next) => {
 	const page = parseInt(req.query.page)
 	const limit = parseInt(req.query.limit)
 	
@@ -75,6 +75,7 @@ function paginatedResults(model){
 		}
 	}
 	
+	
 	if (startIndex > 0){
 		results.previous = {
 		page: page - 1,
@@ -82,22 +83,20 @@ function paginatedResults(model){
 		}
 	}
 	
-	results.results = model.slice(startIndex, endIndex)
-	
+	try {
+	results.results = await model.find().limit(limit).skip(startIndex).exec()
 	res.paginatedResults = results
 	next()
+	} catch (e) {
+	  res.status(500).send();
+	}
+	
+	
 	}
 }
+
 //Server side pagination----END
 
-router.get('/tasks', async (req, res) => {
-  try {
-    const tasks = await Task.find({});
-    res.send(tasks);
-  } catch (e) {
-    res.status(500).send();
-  }
-});
 
 /**
  * @swagger
