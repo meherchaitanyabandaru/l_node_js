@@ -50,8 +50,9 @@ app.get('/', (req, res) => {
 app.use(express.json());
 //app.use(userRouter);
 app.use('/users', require('./routes/user'));
-app.use(taskRouter);
-app.use(postRouter);
+//app.use(taskRouter);
+app.use('/tasks', require('./routes/task'));
+app.use('/posts', require('./routes/post'));
 app.use(authRouter);
 
 app.listen(port, () => {
