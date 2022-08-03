@@ -10,3 +10,8 @@ https://mongoosejs.com/
 
 ## Lodash 
 https://lodash.com/
+
+
+## User Types
+defaultUser 10073
+adminUser 77754

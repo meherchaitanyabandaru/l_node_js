@@ -43,6 +43,11 @@ const User = mongoose.model('User', {
     required: true,
     trim: true,
   },
+  usertype: {
+    type: String,
+    required: true,
+    trim: true,
+  }, 
 });
 
 module.exports = User;
