@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-const User = require('../models/user');
+const UserModel = require('../models/userModel');
 const bcrypt = require('bcryptjs');
 
 
@@ -8,7 +8,7 @@ const createNewUser = ('/users', async (req, res) => {
   const hashedPassword= await bcrypt.hashSync(req.body.password, salt);
   req.body.password=hashedPassword;
   req.body.usertype=10073;
-  const user = new User(req.body);
+  const user = new UserModel(req.body);
 
   try {
     await user.save();
@@ -19,13 +19,11 @@ const createNewUser = ('/users', async (req, res) => {
 });
 
 
-
 const getAllUsers= ('/users', async (req, res) => {
   try {
-    const users = await User.find();
+    const users = await UserModel.find();
     res.send(users);
   } catch (e) {
-
     res.status(500).send();
   }
 });
@@ -35,7 +33,7 @@ const getUser = ('/users/:id', async (req, res) => {
   const _id = req.params.id;
 
   try {
-    const user = await User.findById(_id);
+    const user = await UserModel.findById(_id);
 
     if (!user) {
       return res.status(404).send();
@@ -57,7 +55,7 @@ const updateUser = ('/users/:id', async (req, res) => {
   }
 
   try {
-    const user = await User.findByIdAndUpdate(req.params.id, req.body, {new: true, runValidators: true});
+    const user = await UserModel.findByIdAndUpdate(req.params.id, req.body, {new: true, runValidators: true});
 
     if (!user) {
       return res.status(404).send();
@@ -71,7 +69,7 @@ const updateUser = ('/users/:id', async (req, res) => {
 
 const deleteUser = ('/users/:id', async (req, res) => {
   try {
-    const user = await User.findByIdAndDelete(req.params.id);
+    const user = await UserModel.findByIdAndDelete(req.params.id);
 
     if (!user) {
       return res.status(404).send();
@@ -84,11 +82,10 @@ const deleteUser = ('/users/:id', async (req, res) => {
 });
 
 
-
 module.exports = {
-    createNewUser,
-    getAllUsers,
-    getUser,
-    updateUser,
-    deleteUser
-}
+  createNewUser,
+  getAllUsers,
+  getUser,
+  updateUser,
+  deleteUser,
+};

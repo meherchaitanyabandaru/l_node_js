@@ -1,10 +1,10 @@
 /* eslint-disable max-len */
-const Task = require('../models/task');
-const {paginatedResults} = require('../utils/pagination')
+const TaskModel = require('../models/taskModel');
+const {paginatedResults} = require('../utils/pagination');
 
 
 const createNewTask = ('/tasks', async (req, res) => {
-  const task = new Task(req.body);
+  const task = new TaskModel(req.body);
 
   try {
     await task.save();
@@ -15,10 +15,9 @@ const createNewTask = ('/tasks', async (req, res) => {
 });
 
 
-
-const getAllTasks = ('/tasks', paginatedResults(Task), async (req, res) => {
+const getAllTasks = ('/tasks', paginatedResults(TaskModel), async (req, res) => {
   try {
-    const tasks = await Task.find({});
+    const tasks = await TaskModel.find({});
     res.send(tasks);
     res.json(res.paginatedResults);
   } catch (e) {
@@ -31,7 +30,7 @@ const getTask = ('/tasks/:id', async (req, res) => {
   const _id = req.params.id;
 
   try {
-    const task = await Task.findById(_id);
+    const task = await TaskModel.findById(_id);
 
     if (!task) {
       return res.status(404).send();
@@ -53,7 +52,7 @@ const updateTask = ('/tasks/:id', async (req, res) => {
   }
 
   try {
-    const task = await Task.findByIdAndUpdate(req.params.id, req.body, {new: true, runValidators: true});
+    const task = await TaskModel.findByIdAndUpdate(req.params.id, req.body, {new: true, runValidators: true});
 
     if (!task) {
       return res.status(404).send();
@@ -68,7 +67,7 @@ const updateTask = ('/tasks/:id', async (req, res) => {
 
 const deleteTask = ('/tasks/:id', async (req, res) => {
   try {
-    const task = await Task.findByIdAndDelete(req.params.id);
+    const task = await TaskModel.findByIdAndDelete(req.params.id);
 
     if (!task) {
       res.status(404).send();
