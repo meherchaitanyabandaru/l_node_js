@@ -80,7 +80,6 @@ const deletePost = ('/posts/:id', async (req, res) => {
   }
 });
 
-// module.exports = router;
 module.exports = {
   createNewPost,
   getAllPosts,
