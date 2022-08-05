@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
+    "start": "nodemon server.js" 
+
   },
   "keywords": [
     "express",
@@ -23,8 +24,6 @@
     "mongoose": "^6.5.0",
     "nodemon": "^2.0.19",
     "random-name": "^0.1.2",
-    "swagger-jsdoc": "^6.2.1",
-    "swagger-ui-express": "^4.5.0",
     "time-stamp": "^2.2.0",
     "uuid": "^8.3.2",
     "validator": "^13.7.0"

@@ -1,33 +1,7 @@
-const express = require('express');
+/* eslint-disable max-len */
 const Task = require('../models/task');
-const router = new express.Router();
 const {paginatedResults} = require('../utils/pagination')
 
-// Routes
-
-/**
- * @swagger
- * /tasks:
- *   post:
- *     "tags": ["Tasks"]
- *     summary: Create a new task.
- *     responses:
- *       201:
- *         description: Created
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                     description:
- *                       type: string
- *                       description: task description.
- *                       example: my description sowmya chappidi
- *                     completed:
- *                       type: Boolean
- *                       description: complete status.
- *                       example: true
-*/
 
 const createNewTask = ('/tasks', async (req, res) => {
   const task = new Task(req.body);
@@ -41,18 +15,6 @@ const createNewTask = ('/tasks', async (req, res) => {
 });
 
 
-// Routes
-/**
- *  @swagger
- *  /tasks:
- *  get:
- *     "tags": ["Tasks"]
- *     description: "it will fetch all the tasks information"
- *     responses:
- *        '200':
- *          description: "success"
-*/
-
 
 const getAllTasks = ('/tasks', paginatedResults(Task), async (req, res) => {
   try {
@@ -64,26 +26,6 @@ const getAllTasks = ('/tasks', paginatedResults(Task), async (req, res) => {
   }
 });
 
-
-
-/**
- * @swagger
- * /tasks/{id}:
- *   get:
- *     "tags": ["Tasks"]
- *     summary: Retrieve a single JSONPlaceholder user.
- *     description: Retrieve a single JSONPlaceholder user. Can be used to populate a user profile when prototyping or testing an API.
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         description: Numeric ID of the user to retrieve.
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: Pet updated.
- */
 
 const getTask = ('/tasks/:id', async (req, res) => {
   const _id = req.params.id;
@@ -124,25 +66,6 @@ const updateTask = ('/tasks/:id', async (req, res) => {
 });
 
 
-/**
- * @swagger
- * /tasks/{id}:
- *   delete:
- *     "tags": ["Tasks"]
- *     summary: it will delete the task.
- *     description: Retrieve a single JSONPlaceholder user. Can be used to populate a user profile when prototyping or testing an API.
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         description: Numeric ID of the user to retrieve.
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: task deleted.
- */
-
 const deleteTask = ('/tasks/:id', async (req, res) => {
   try {
     const task = await Task.findByIdAndDelete(req.params.id);
@@ -162,5 +85,5 @@ module.exports = {
   getAllTasks,
   getTask,
   updateTask,
-  deleteTask
-}
+  deleteTask,
+};

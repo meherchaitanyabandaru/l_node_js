@@ -16,7 +16,7 @@ const router = new express.Router();
  *     summary: Create a new Post.
  *     description: this is used to insert a new post into db.
  *     requestBody:
- *          required: true 
+ *          required: true
  *     responses:
  *       201:
  *         description: Created
@@ -141,7 +141,7 @@ const getPost = ('/posts/:id', async (req, res) => {
  *                               type: string
  *                               description: The posted By.
  *                               example: MEHAR BANDARU
- * 
+ *
  *     responses:
  *       200:
  *         description: record updated.
@@ -221,11 +221,11 @@ const deletePost = ('/posts/:id', async (req, res) => {
   }
 });
 
-//module.exports = router;
+// module.exports = router;
 module.exports = {
   createNewPost,
   getAllPosts,
   getPost,
   updatePost,
-  deletePost
-}
+  deletePost,
+};
