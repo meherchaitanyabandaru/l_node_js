@@ -7,16 +7,16 @@ const bcrypt = require('bcryptjs');
 
 
 router.post('/login', async (req, res) => {
-  const user = await UserModel.find({ email: req.body.email });
+  const user = await UserModel.find({email: req.body.email});
   let isValidPassword = null;
   if (user[0]?.password) {
     isValidPassword = bcrypt.compareSync(req?.body?.password, user[0]?.password);
   }
   try {
     if (!user[0]?.email || !isValidPassword) {
-      res.status(404).send({ 'Error-Message': 'invalid credentials' });
+      res.status(404).send({'Error-Message': 'invalid credentials'});
     } else {
-      const token = jwt.sign({ email: user[0]?.email, password: user[0]?.password }, 'shhhhh', { expiresIn: '15s' });
+      const token = jwt.sign({email: user[0]?.email, password: user[0]?.password}, 'shhhhh', {expiresIn: '15s'});
       const authenticationResponse = {
         'authenticationStatus': true,
         'Access-Token': token,
