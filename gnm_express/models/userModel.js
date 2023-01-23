@@ -2,7 +2,33 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 
 const UserModel = mongoose.model('User', {
-  name: {
+  fullName: {
+    firstName: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    middleName: {
+      type: String,
+      required: false,
+      trim: true,
+    },
+    lastName: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+  },
+  dateOfBirth: {
+    type: Date,
+    // The dates of the first and last episodes of
+    // Star Trek: The Next Generation
+    min: '1950-01-01',
+    max: '2022-12-31',
+    required: true,
+    trim: true,
+  },
+  gender: {
     type: String,
     required: true,
     trim: true,
@@ -18,6 +44,48 @@ const UserModel = mongoose.model('User', {
       }
     },
   },
+  phoneNumber: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  address: {
+    doorNo: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    streetName: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    areaName: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    city: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    state: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    country: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    zipcode: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+  },
   password: {
     type: String,
     required: true,
@@ -28,20 +96,6 @@ const UserModel = mongoose.model('User', {
         throw new Error('Password cannot contain "password"');
       }
     },
-  },
-  age: {
-    type: Number,
-    default: 0,
-    validate(value) {
-      if (value < 0) {
-        throw new Error('Age must be a postive number');
-      }
-    },
-  },
-  city: {
-    type: String,
-    required: true,
-    trim: true,
   },
   usertype: {
     type: String,

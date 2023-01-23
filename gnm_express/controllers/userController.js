@@ -2,7 +2,7 @@
 const UserModel = require('../models/userModel');
 const bcrypt = require('bcryptjs');
 
-
+// Creating New User
 const createNewUser = ('/users', async (req, res) => {
   const salt=await bcrypt.genSaltSync(10);
   const hashedPassword= await bcrypt.hashSync(req.body.password, salt);
