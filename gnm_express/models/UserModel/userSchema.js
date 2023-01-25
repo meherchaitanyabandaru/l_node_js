@@ -100,13 +100,8 @@ const userSchema = new Schema({
     },
   },
   usertype: {
-    type: String,
+    type: Array,
     required: true,
-    trim: true,
-  },
-  accountID: {
-    type: String,
-    required: false,
     trim: true,
   },
   UID: {
