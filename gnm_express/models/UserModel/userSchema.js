@@ -23,8 +23,6 @@ const userSchema = new Schema({
   },
   dateOfBirth: {
     type: Date,
-    // The dates of the first and last episodes of
-    // Star Trek: The Next Generation
     min: '1950-01-01',
     max: '2022-12-31',
     required: true,
@@ -47,7 +45,7 @@ const userSchema = new Schema({
     },
   },
   phoneNumber: {
-    type: String,
+    type: Number,
     required: true,
     trim: true,
   },
