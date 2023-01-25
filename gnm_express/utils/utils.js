@@ -1,15 +1,18 @@
 
 
 const generateNewUserID = (UID) => {
-  UID=parseInt(UID.toString().slice(4));
-  const incriment=UID+1;
   const currentYear=new Date().getFullYear();
+  const incriment=parseInt(UID.toString().slice(4))+1;
+  console.log(incriment);
   let preceeding=String('');
-  const reqlength=6-UID.toString().length;
-  for (let i =0; i<=reqlength; i++) {
+  console.log(parseInt(incriment.toString().length+4))
+  console.log(10-parseInt(incriment.toString().length+4));
+  const reqlength=10-parseInt(incriment.toString().length+4);
+  for (let i =0; i<reqlength; i++) {
     preceeding=preceeding+'0';
   }
-  const newUserID=currentYear.toString()+preceeding.toString()+incriment;
+  // eslint-disable-next-line max-len
+  const newUserID=currentYear.toString()+preceeding.toString()+incriment.toString();
   return newUserID;
 };
 

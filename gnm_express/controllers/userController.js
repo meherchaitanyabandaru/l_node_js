@@ -8,13 +8,13 @@ const createNewUser = ('/users', async (req, res) => {
   const users = await UserModel.find().sort({UID: -1}).limit(1);
 
   // Create NEW USER ID
-  const UID=Number(users[0]?.UID) || 1;
+  const UID=users[0]?.UID || '2023000001';
 
   const salt=await bcrypt.genSaltSync(10);
   const hashedPassword= await bcrypt.hashSync(req.body.password, salt);
   req.body.password=hashedPassword;
   req.body.usertype=10073;
-  req.body.UID=generateNewUserID(UID.toString());
+  req.body.UID=generateNewUserID(UID);
   const user = new UserModel(req.body);
 
   try {
@@ -29,7 +29,8 @@ const createNewUser = ('/users', async (req, res) => {
 
 const getAllUsers= ('/users', async (req, res) => {
   try {
-    const users = await UserModel.find();
+    // const users = await UserModel.find();
+    const users = await UserModel.find().sort({UID: -1}).limit(1);
     res.send(users);
   } catch (e) {
     res.status(500).send();

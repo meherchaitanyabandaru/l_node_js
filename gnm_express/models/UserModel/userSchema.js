@@ -104,6 +104,11 @@ const userSchema = new Schema({
     required: true,
     trim: true,
   },
+  accountID: {
+    type: String,
+    required: false,
+    trim: true,
+  },
   UID: {
     type: String,
     required: true,
