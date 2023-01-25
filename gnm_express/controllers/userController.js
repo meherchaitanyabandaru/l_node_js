@@ -1,18 +1,25 @@
 /* eslint-disable max-len */
 const UserModel = require('../models/UserModel/userModel');
 const bcrypt = require('bcryptjs');
+const {generateNewUserID} = require('./../utils/utils');
 
 // Creating New User
 const createNewUser = ('/users', async (req, res) => {
+  const users = await UserModel.find().sort({UID: -1}).limit(1);
+
+  // Create NEW USER ID
+  const UID=Number(users[0]?.UID) || 1;
+
   const salt=await bcrypt.genSaltSync(10);
   const hashedPassword= await bcrypt.hashSync(req.body.password, salt);
   req.body.password=hashedPassword;
   req.body.usertype=10073;
+  req.body.UID=generateNewUserID(UID.toString());
   const user = new UserModel(req.body);
 
   try {
     await user.save();
-    const result ={user: user.email, phoneNumber: user.phoneNumber};
+    const result ={user: user.email, phoneNumber: user.phoneNumber, userID: user.UID};
     res.status(201).send(result);
   } catch (e) {
     res.status(400).send(e);

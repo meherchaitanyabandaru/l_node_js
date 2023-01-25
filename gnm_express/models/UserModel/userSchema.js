@@ -104,6 +104,11 @@ const userSchema = new Schema({
     required: true,
     trim: true,
   },
-});
+  UID: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+}, {timestamps: {createdAt: 'created_at', updatedAt: 'updated_at'}});
 
-module.exports=userSchema;
+module.exports = userSchema;
