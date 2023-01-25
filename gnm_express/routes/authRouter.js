@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 const express = require('express');
-const UserModel = require('../models/userModel');
+const UserModel = require('../models/UserModel/userModel');
 const router = new express.Router();
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');

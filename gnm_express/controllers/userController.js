@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-const UserModel = require('../models/userModel');
+const UserModel = require('../models/UserModel/userModel');
 const bcrypt = require('bcryptjs');
 
 // Creating New User
@@ -12,7 +12,8 @@ const createNewUser = ('/users', async (req, res) => {
 
   try {
     await user.save();
-    res.status(201).send(user);
+    const result ={user: user.email, phoneNumber: user.phoneNumber};
+    res.status(201).send(result);
   } catch (e) {
     res.status(400).send(e);
   }
@@ -29,11 +30,12 @@ const getAllUsers= ('/users', async (req, res) => {
 });
 
 
-const getUser = ('/users/:id', async (req, res) => {
-  const _id = req.params.id;
+const getUser = ('/users/:email/:phoneNumber', async (req, res) => {
+  const email = req.params.email;
+  const phoneNumber = req.params.phoneNumber;
 
   try {
-    const user = await UserModel.findById(_id);
+    const user = await UserModel.find({$or: [{email: email}, {phoneNumber: phoneNumber}]});
 
     if (!user) {
       return res.status(404).send();

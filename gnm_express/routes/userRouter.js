@@ -8,7 +8,7 @@ router.route('/')
     .patch(userController.updateUser)
     .delete(userController.deleteUser);
 
-router.route('/:id')
+router.route('/:email/:phoneNumber')
     .get(userController.getUser);
 
 module.exports = router;
