@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 const TaskModel = require('../models/taskModel');
-const {paginatedResults, paginateQuery} = require('../utils/pagination');
+const {paginatedResults} = require('../middlewares/pagination');
 
 
 const createNewTask = ('/tasks', async (req, res) => {
