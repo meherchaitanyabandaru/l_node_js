@@ -1,9 +1,27 @@
 /* eslint-disable max-len */
 const EventModel = require('../models/EventModel/eventModel');
+const UserModel = require('../models/UserModel/userModel');
+const {NYC_2023} =require('../config/config');
 const {paginatedResults} = require('../middlewares/pagination');
+const {notFoundError} = require('../utils/customHttpMessages');
 
 
 const createNewEvent = ('/event', async (req, res) => {
+  let userInfo = await UserModel.find({email: req.body.registredUserEmail});
+  let approvalInfo = await UserModel.find({email: req.email});
+  userInfo=userInfo[0];approvalInfo=approvalInfo[0];
+  if (!userInfo.email==req.body.registredUserEmail) {
+    return res.status(404).send(notFoundError('You have not registred'));
+  }
+
+  req.body.eventName=NYC_2023.eventName;
+  req.body.eventStartDate=NYC_2023.eventStartDate;
+  req.body.eventEndDate=NYC_2023.eventEndDate;
+  req.body.registredUserID=userInfo.UID;
+  req.body.registredUserName=userInfo.fullName.firstName;
+  req.body.approvalUserID=approvalInfo.UID;
+  req.body.approvalUserName=approvalInfo.fullName.firstName;
+
   const event = new EventModel(req.body);
 
   try {
@@ -25,17 +43,18 @@ const getAllEvents = ('/event', async (req, res) => {
 });
 
 
-const getEvent = ('/event/:id', async (req, res) => {
-  const _id = req.params.id;
+const getEventRegistrationStatus = ('/event/:id', async (req, res) => {
+  const registredUserID = req.params.id;
 
   try {
-    const event = await EventModel.findById(_id);
+    let userInfo = await EventModel.find({registredUserID: registredUserID});
+    userInfo=userInfo[0];
 
-    if (!event) {
-      return res.status(404).send();
+    if (!userInfo) {
+      return res.status(404).send(notFoundError('Invalid ID'));
     }
 
-    res.send(event);
+    res.send(userInfo);
   } catch (e) {
     res.status(500).send();
   }
@@ -81,7 +100,7 @@ const deleteEvent = ('/event/:id', async (req, res) => {
 module.exports = {
   createNewEvent,
   getAllEvents,
-  getEvent,
+  getEventRegistrationStatus,
   updateEvent,
   deleteEvent,
 };
