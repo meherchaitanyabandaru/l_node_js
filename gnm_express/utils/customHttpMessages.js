@@ -28,6 +28,10 @@ const customError = (StatusCode, ErrorMessage) => {
   return {StatusCode: StatusCode, ErrorMessage: ErrorMessage};
 };
 
+const createdDataStatus = (data) => {
+  return {StatusCode: 201, data: data};
+};
+
 module.exports = {
   badRequestError,
   unAuthorisedError,
@@ -38,4 +42,5 @@ module.exports = {
   methodNotAllowdError,
   internalServerError,
   customError,
+  createdDataStatus,
 };

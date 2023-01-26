@@ -2,7 +2,7 @@
 const UserModel = require('../models/UserModel/userModel');
 const bcrypt = require('bcryptjs');
 const {generateNewUserID, validatePassword} = require('./../utils/utils');
-const {forbiddenError, internalServerError, notFoundError} = require('./../utils/customHttpMessages');
+const {forbiddenError, internalServerError, notFoundError, createdDataStatus} = require('./../utils/customHttpMessages');
 
 // Creating New User
 const createNewUser = ('/users', async (req, res) => {
@@ -32,7 +32,7 @@ const createNewUser = ('/users', async (req, res) => {
   try {
     await user.save();
     const result = {user: user.email, phoneNumber: user.phoneNumber, userID: user.UID};
-    res.status(201).send(result);
+    res.status(201).send(createdDataStatus(result));
   } catch (e) {
     res.status(400).send(e);
   }

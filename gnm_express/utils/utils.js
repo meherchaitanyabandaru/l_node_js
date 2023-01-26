@@ -17,8 +17,8 @@ const validatePassword=(newPassword) =>{
   const minNumberofChars = 6;
   const maxNumberofChars = 16;
   const regularExpression = /^[a-zA-Z0-9!@#$%^&*]{6,16}$/;
-  if (newPassword.length < minNumberofChars ||
-    newPassword.length > maxNumberofChars) {
+  if (newPassword?.length < minNumberofChars ||
+    newPassword?.length > maxNumberofChars) {
     return false;
   } else if (!regularExpression.test(newPassword)) {
     return false;
