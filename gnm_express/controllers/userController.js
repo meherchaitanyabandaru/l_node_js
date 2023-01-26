@@ -2,7 +2,7 @@
 const UserModel = require('../models/UserModel/userModel');
 const bcrypt = require('bcryptjs');
 const {generateNewUserID, validatePassword} = require('./../utils/utils');
-const {forbiddenError, internalServerError} = require('./../utils/customHttpMessages');
+const {forbiddenError, internalServerError, notFoundError} = require('./../utils/customHttpMessages');
 
 // Creating New User
 const createNewUser = ('/users', async (req, res) => {
@@ -42,11 +42,7 @@ const createNewUser = ('/users', async (req, res) => {
 const getAllUsers = ('/users', async (req, res) => {
   try {
     const users = await UserModel.find();
-    const registriedEmail = await UserModel.find().count({email: 'tejaswimudragada@gmail.com'});
-    if (registriedEmail>0) {
-      res.status(500).send({'email': 'email-already-exist'});
-    }
-    res.send({data2});
+    res.send(users);
   } catch (e) {
     res.status(500).send();
   }
@@ -58,15 +54,15 @@ const getUser = ('/users/:email/:phoneNumber', async (req, res) => {
   const phoneNumber = req.params.phoneNumber;
 
   try {
-    const user = await UserModel.find({$or: [{email: email}, {phoneNumber: phoneNumber}]});
+    const user = await UserModel.find({$and: [{email: email}, {phoneNumber: phoneNumber}]});
 
     if (!user) {
-      return res.status(404).send();
+      return res.status(404).send(notFoundError(404, 'Data Not Found Error'));
     }
 
     res.send(user);
   } catch (e) {
-    res.status(500).send();
+    res.status(500).send(internalServerError(500, e));
   }
 });
 

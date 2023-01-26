@@ -4,6 +4,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 require('./db/mongoose');
 const authRouter = require('./routes/authRouter');
+const {invalidRequestError} = require('./utils/customHttpMessages');
 
 
 // setting app
@@ -38,15 +39,7 @@ app.use(authRouter);
 // this is default in case of unmatched routes
 app.use(function(req, res) {
   // Invalid request
-  res.json({
-    error: {
-      'name': 'Error',
-      'status': 404,
-      'message': 'Invalid Request',
-      'statusCode': 404,
-    },
-    message: 'Invalid Request',
-  });
+  res.json(invalidRequestError('Invalid Route Request'));
 });
 
 app.listen(port, () => {

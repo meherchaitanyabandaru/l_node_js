@@ -7,7 +7,15 @@ const bcrypt = require('bcryptjs');
 
 
 router.post('/login', async (req, res) => {
-  const user = await UserModel.find({email: req.body.email});
+  let queryFilter='NA';
+  if (req.body?.email) {
+    queryFilter={email: req.body.email};
+  } else if (req.body?.UID) {
+    queryFilter={UID: req.body.UID};
+  } else if (req.body.phoneNumber) {
+    queryFilter={phoneNumber: req.body.phoneNumber};
+  }
+  const user = await UserModel.find(queryFilter);
   let isValidPassword = null;
   if (user[0]?.password) {
     isValidPassword = bcrypt.compareSync(req?.body?.password, user[0]?.password);
@@ -29,7 +37,7 @@ router.post('/login', async (req, res) => {
 });
 
 router.post('/verifyToken', async (req, res) => {
-  const token = req.body.token;
+  const token = req.body.accessToken;
   try {
     const verifiedToken = jwt.verify(token, 'shhhhh');
     if (verifiedToken?.email) {
