@@ -3,22 +3,24 @@ const EventModel = require('../models/EventModel/eventModel');
 const UserModel = require('../models/UserModel/userModel');
 const {NYC_2023} =require('../config/config');
 const {paginatedResults} = require('../middlewares/pagination');
-const {notFoundError} = require('../utils/customHttpMessages');
+const {notFoundError, createdDataStatus} = require('../utils/customHttpMessages');
 
 
 const createNewEvent = ('/event', async (req, res) => {
   let userInfo = await UserModel.find({email: req.body.registredUserEmail});
   let approvalInfo = await UserModel.find({email: req.email});
-  userInfo=userInfo[0];approvalInfo=approvalInfo[0];
+  userInfo=userInfo[0]; approvalInfo=approvalInfo[0];
   if (!userInfo.email==req.body.registredUserEmail) {
     return res.status(404).send(notFoundError('You have not registred'));
   }
-
+  // Event Details
   req.body.eventName=NYC_2023.eventName;
   req.body.eventStartDate=NYC_2023.eventStartDate;
   req.body.eventEndDate=NYC_2023.eventEndDate;
+  // User/Participant Details
   req.body.registredUserID=userInfo.UID;
   req.body.registredUserName=userInfo.fullName.firstName;
+  // Approval Details
   req.body.approvalUserID=approvalInfo.UID;
   req.body.approvalUserName=approvalInfo.fullName.firstName;
 
@@ -26,7 +28,7 @@ const createNewEvent = ('/event', async (req, res) => {
 
   try {
     await event.save();
-    res.status(201).send(event);
+    res.status(201).send(createdDataStatus(event));
   } catch (e) {
     res.status(400).send(e);
   }
