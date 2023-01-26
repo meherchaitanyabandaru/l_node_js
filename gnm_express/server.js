@@ -39,7 +39,7 @@ app.use(authRouter);
 // this is default in case of unmatched routes
 app.use(function(req, res) {
   // Invalid request
-  res.json(invalidRequestError('Invalid Route Request'));
+  res.json(invalidRequestError('Invalid URL'));
 });
 
 app.listen(port, () => {

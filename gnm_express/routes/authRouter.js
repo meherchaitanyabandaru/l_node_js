@@ -1,5 +1,6 @@
 /* eslint-disable max-len */
 const express = require('express');
+const dotenvConfig = require('dotenv').config();
 const UserModel = require('../models/UserModel/userModel');
 const router = new express.Router();
 const jwt = require('jsonwebtoken');
@@ -24,7 +25,7 @@ router.post('/login', async (req, res) => {
     if (!user[0]?.email || !isValidPassword) {
       res.status(404).send({'Error-Message': 'invalid credentials'});
     } else {
-      const token = jwt.sign({email: user[0]?.email, password: user[0]?.password}, 'shhhhh', {expiresIn: '15s'});
+      const token = jwt.sign({email: user[0]?.email, password: user[0]?.password}, dotenvConfig.parsed.JWT_SECRECT, {expiresIn: dotenvConfig.parsed.JWT_EXPIRY});
       const authenticationResponse = {
         'authenticationStatus': true,
         'Access-Token': token,
@@ -39,7 +40,7 @@ router.post('/login', async (req, res) => {
 router.post('/verifyToken', async (req, res) => {
   const token = req.body.accessToken;
   try {
-    const verifiedToken = jwt.verify(token, 'shhhhh');
+    const verifiedToken = jwt.verify(token, dotenvConfig.parsed.JWT_SECRECT);
     if (verifiedToken?.email) {
       const tokenVerificationStatus = {
         'isTokenValid': true,
