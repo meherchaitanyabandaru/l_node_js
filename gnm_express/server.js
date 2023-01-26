@@ -34,6 +34,7 @@ app.use(express.json());
 app.use('/users', require('./routes/userRouter'));
 app.use('/tasks', require('./routes/taskRouter'));
 app.use('/posts', require('./routes/postRouter'));
+app.use('/events', require('./routes/eventRouter'));
 app.use(authRouter);
 
 // this is default in case of unmatched routes
