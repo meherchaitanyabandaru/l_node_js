@@ -41,7 +41,7 @@ const createNewUser = ('/users', async (req, res) => {
 
 const getAllUsers = ('/users', async (req, res) => {
   try {
-    const users = await UserModel.find();
+    const users = await UserModel.find({email: req.email});
     res.send(users);
   } catch (e) {
     res.status(500).send();
@@ -49,12 +49,11 @@ const getAllUsers = ('/users', async (req, res) => {
 });
 
 
-const getUser = ('/users/:email/:phoneNumber', async (req, res) => {
-  const email = req.params.email;
-  const phoneNumber = req.params.phoneNumber;
+const getUser = ('/users/:email', async (req, res) => {
+  const email = req.email;
 
   try {
-    const user = await UserModel.find({$and: [{email: email}, {phoneNumber: phoneNumber}]});
+    const user = await UserModel.find({email: email});
 
     if (!user) {
       return res.status(404).send(notFoundError(404, 'Data Not Found Error'));
