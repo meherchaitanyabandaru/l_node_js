@@ -61,32 +61,9 @@ isModerator = async (req, res, next) => {
   }
 };
 
-isModeratorOrAdmin = async (req, res, next) => {
-  try {
-    const user = await UserModel.find({$and:
-      [{email: 'jhansibandaru971@gmail.com'},
-        {usertype: 'test'}]});
-    const roles = user[0].usertype;
-
-    for (let i = 0; i < roles.length; i++) {
-      if (roles[i].name === 'default') {
-        return next();
-      }
-
-      if (roles[i].name === 'admin') {
-        return next();
-      }
-    }
-
-    return res.status(403).send(forbiddenError('Require Moderator or Admin Role!'));
-  } catch (error) {
-    return res.status(500).send(internalServerError('Unable to validate Moderator or Admin role!'));
-  }
-};
 const authJwt = {
   verifyToken,
   isAdmin,
   isModerator,
-  isModeratorOrAdmin,
 };
 module.exports = authJwt;

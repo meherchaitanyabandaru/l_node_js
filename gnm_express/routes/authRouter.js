@@ -5,6 +5,8 @@ const UserModel = require('../models/UserModel/userModel');
 const router = new express.Router();
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const {badRequestError} = require('./../utils/customHttpMessages');
+
 
 
 router.post('/login', async (req, res) => {
@@ -15,6 +17,8 @@ router.post('/login', async (req, res) => {
     queryFilter={UID: req.body.UID};
   } else if (req.body.phoneNumber) {
     queryFilter={phoneNumber: req.body.phoneNumber};
+  } else {
+    return res.status(400).send(badRequestError('Please Enter Valid Credentials'));
   }
   const user = await UserModel.find(queryFilter);
   let isValidPassword = null;

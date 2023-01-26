@@ -49,7 +49,7 @@ const getAllUsers = ('/users', async (req, res) => {
 });
 
 
-const getUser = ('/users/:email', async (req, res) => {
+const getUser = ('/usersinfo', async (req, res) => {
   const email = req.email;
 
   try {

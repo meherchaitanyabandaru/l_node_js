@@ -6,11 +6,12 @@ require('../middlewares/authJwt');
 
 router.route('/')
     .post(userController.createNewUser)
-    .get(verifyToken, isModerator, userController.getAllUsers)
+    .get(verifyToken, isAdmin, userController.getAllUsers)
+    .get(verifyToken, isModerator, userController.getUser)
     .patch(verifyToken, isModerator, userController.updateUser)
     .delete(verifyToken, isAdmin, userController.deleteUser);
 
-router.route('/:email')
+router.route('/self')
     .get(verifyToken, isModerator, userController.getUser);
 
 module.exports = router;

@@ -1,3 +1,7 @@
+const badRequestError = (ErrorMessage) => {
+  return {StatusCode: 400, ErrorMessage: ErrorMessage};
+};
+
 const unAuthorisedError = (ErrorMessage) => {
   return {StatusCode: 401, ErrorMessage: ErrorMessage};
 };
@@ -25,6 +29,7 @@ const customError = (StatusCode, ErrorMessage) => {
 };
 
 module.exports = {
+  badRequestError,
   unAuthorisedError,
   paymentRequiredError,
   forbiddenError,
