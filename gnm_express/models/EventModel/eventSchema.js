@@ -43,13 +43,15 @@ const userSchema = new Schema({
     trim: true,
   },
   amountPaid: {
-    type: String,
+    type: Number,
+    min: 100,
+    max: 10000,
     required: true,
     trim: true,
   },
   remarks: {
     type: String,
-    required: true,
+    required: false,
     trim: true,
   },
   registrationStatus: {
