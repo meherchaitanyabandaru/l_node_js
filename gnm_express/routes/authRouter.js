@@ -8,7 +8,6 @@ const bcrypt = require('bcryptjs');
 const {badRequestError} = require('./../utils/customHttpMessages');
 
 
-
 router.post('/login', async (req, res) => {
   let queryFilter='NA';
   if (req.body?.email) {
