@@ -4,7 +4,7 @@ const UserModel = require('../models/UserModel/userModel');
 const {NYC_2023} =require('../config/config');
 const {paginatedResults} = require('../middlewares/pagination');
 const {notFoundError, createdDataStatus} = require('../utils/customHttpMessages');
-
+const {generatePaymentReceiptID} =require('../utils/utils');
 
 const createNewEvent = ('/event', async (req, res) => {
   let userInfo = await UserModel.find({email: req.body.registredUserEmail});
@@ -23,6 +23,7 @@ const createNewEvent = ('/event', async (req, res) => {
   // Approval Details
   req.body.approvalUserID=approvalInfo.UID;
   req.body.approvalUserName=approvalInfo.fullName.firstName;
+  req.body.paymentReceiptID=generatePaymentReceiptID();
 
   const event = new EventModel(req.body);
 

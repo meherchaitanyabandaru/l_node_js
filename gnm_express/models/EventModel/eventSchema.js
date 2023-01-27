@@ -49,6 +49,13 @@ const userSchema = new Schema({
     required: true,
     trim: true,
   },
+  paymentReceiptID: {
+    type: String,
+    min: 100,
+    max: 10000,
+    required: true,
+    trim: true,
+  },
   remarks: {
     type: String,
     required: false,

@@ -13,6 +13,27 @@ const generateNewUserID = (UID) => {
   return newUserID;
 };
 
+
+const makeRandomString = (stringLength) => {
+  let result = '';
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'+
+    'abcdefghijklmnopqrstuvwxyz'+
+    '0123456789';
+  const charactersLength = characters.length;
+  let counter = 0;
+  while (counter < stringLength) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    counter += 1;
+  }
+  return result;
+};
+
+const generatePaymentReceiptID = () => {
+  const currentYear=new Date().getFullYear();
+  const paymentReceiptID=currentYear.toString()+makeRandomString(10);
+  return paymentReceiptID;
+};
+
 const validatePassword=(newPassword) =>{
   const minNumberofChars = 6;
   const maxNumberofChars = 16;
@@ -28,5 +49,7 @@ const validatePassword=(newPassword) =>{
 };
 module.exports = {
   generateNewUserID,
+  generatePaymentReceiptID,
   validatePassword,
+  makeRandomString,
 };

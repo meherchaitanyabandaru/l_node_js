@@ -41,7 +41,7 @@ const createNewUser = ('/users', async (req, res) => {
 
 const getAllUsers = ('/users', async (req, res) => {
   try {
-    const users = await UserModel.find({email: req.email});
+    const users = await UserModel.find();
     res.send(users);
   } catch (e) {
     res.status(500).send();
