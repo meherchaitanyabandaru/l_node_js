@@ -9,16 +9,21 @@ const {generatePaymentReceiptID} = require('../utils/utils');
 const createNewEvent = ('/event', async (req, res) => {
   // Get User info from the Users Collection
   let userInfo = await UserModel.find({email: req.body.registredUserEmail});
-  userInfo = userInfo[0]; approvalInfo = approvalInfo[0];
+  userInfo = userInfo[0];
   if (!userInfo.email == req.body.registredUserEmail) {
     return res.status(404).send(notFoundError('You have not registred'));
   }
+
   // Get Approval Info
   let approvalInfo = await UserModel.find({email: req.email});
-
+  approvalInfo = approvalInfo[0];
   // Get Check if User Already Paid
+  console.log('MEHER,MEHER2.UID');
+  console.log(userInfo);
   let eventInfo = await EventModel.find({registredUserID: userInfo.UID});
+  console.log('MEHER', eventInfo);
   eventInfo = eventInfo[0];
+  console.log(eventInfo);
   if (eventInfo.registrationStatus) {
     return res.status(500).send(internalServerError('You payment is already completed'));
   }
