@@ -6,7 +6,7 @@ require('../middlewares/authJwt');
 
 router.route('/')
     .post(userController.createNewUser)
-    .get( userController.getAllUsers)
+    .get( verifyToken, isAdmin, userController.getAllUsers)
     .get(verifyToken, isModerator, userController.getUser)
     .patch(verifyToken, isModerator, userController.updateUser)
     .delete(verifyToken, isAdmin, userController.deleteUser);

@@ -27,7 +27,6 @@ isAdmin = async (req, res, next) => {
     const user = await UserModel.find({email: req.email});
     const roles = user[0].usertype;
     console.log(roles);
-
     for (let i = 0; i < roles.length; i++) {
       if (roles[i] === 'admin') {
         return next();
