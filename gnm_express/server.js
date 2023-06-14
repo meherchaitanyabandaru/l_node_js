@@ -5,6 +5,14 @@ const mongoose = require('mongoose');
 require('./db/mongoose');
 const authRouter = require('./routes/authRouter');
 const {invalidRequestError} = require('./utils/customHttpMessages');
+const fs = require('fs');
+const http = require('http');
+const https = require('https');
+
+const privateKey = fs.readFileSync('./cert/server.key');
+const certificate = fs.readFileSync('./cert/server.crt');
+
+const credentials = {key: privateKey, cert: certificate};
 
 
 // setting app
@@ -15,7 +23,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: false,
 }));
-const port = 3000;
+
+// const port = 3000;
 
 
 // Get the default connection
@@ -44,6 +53,14 @@ app.use(function(req, res) {
 });
 
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
-});
+// app.listen(port, () => {
+//   console.log(`Example app listening on port ${port}`);
+// });
+
+// your express configuration here
+
+const httpServer = http.createServer(app);
+const httpsServer = https.createServer(credentials, app);
+
+httpServer.listen(8080);
+httpsServer.listen(8443);
