@@ -1,14 +1,17 @@
 const express = require('express');
 const router = new express.Router();
 const userController = require('../controllers/userController');
+const {verifyToken, isAdmin} =
+require('../middlewares/authJwt');
 
 router.route('/')
     .post(userController.createNewUser)
-    .get(userController.getAllUsers)
-    .patch(userController.updateUser)
-    .delete(userController.deleteUser);
+    .get( verifyToken, isAdmin, userController.getAllUsers)
+    .get(verifyToken, isModerator, userController.getUser)
+    .patch(verifyToken, isModerator, userController.updateUser)
+    .delete(verifyToken, isAdmin, userController.deleteUser);
 
-router.route('/:id')
-    .get(userController.getUser);
+router.route('/self')
+    .get(verifyToken, isModerator, userController.getUser);
 
 module.exports = router;

@@ -1,25 +1,45 @@
 /* eslint-disable max-len */
-const UserModel = require('../models/userModel');
+const UserModel = require('../models/UserModel/userModel');
 const bcrypt = require('bcryptjs');
+const {generateNewUserID, validatePassword} = require('./../utils/utils');
+const {forbiddenError, internalServerError, notFoundError, createdDataStatus} = require('./../utils/customHttpMessages');
 
-
+// Creating New User
 const createNewUser = ('/users', async (req, res) => {
-  const salt=await bcrypt.genSaltSync(10);
-  const hashedPassword= await bcrypt.hashSync(req.body.password, salt);
-  req.body.password=hashedPassword;
-  req.body.usertype=10073;
+  const users = await UserModel.find().sort({UID: -1}).limit(1);
+
+  const registriedEmail = await UserModel.find().count({email: req.body.email});
+  if (registriedEmail>0) {
+    return res.status(403).send(forbiddenError('This Email-ID is already registred'));
+  }
+  const registredPhoneNumber = await UserModel.find().count({phoneNumber: req.body.phoneNumber});
+  if (registredPhoneNumber>0) {
+    return res.status(403).send(forbiddenError('This Phone Number is already registred'));
+  }
+  if (!validatePassword(req.body.password)) {
+    return res.status(403).send(internalServerError('password should contain atleast one number and one special character'));
+  }
+
+  const UID = users[0]?.UID || '2023000001';
+
+  const salt = await bcrypt.genSaltSync(10);
+  const hashedPassword = await bcrypt.hashSync(req.body.password, salt);
+  req.body.password = hashedPassword;
+  req.body.usertype = ['default'];
+  req.body.UID = generateNewUserID(UID);
   const user = new UserModel(req.body);
 
   try {
     await user.save();
-    res.status(201).send(user);
+    const result = {user: user.email, phoneNumber: user.phoneNumber, userID: user.UID};
+    res.status(201).send(createdDataStatus(result));
   } catch (e) {
     res.status(400).send(e);
   }
 });
 
 
-const getAllUsers= ('/users', async (req, res) => {
+const getAllUsers = ('/users', async (req, res) => {
   try {
     const users = await UserModel.find();
     res.send(users);
@@ -29,19 +49,19 @@ const getAllUsers= ('/users', async (req, res) => {
 });
 
 
-const getUser = ('/users/:id', async (req, res) => {
-  const _id = req.params.id;
+const getUser = ('/usersinfo', async (req, res) => {
+  const email = req.email;
 
   try {
-    const user = await UserModel.findById(_id);
+    const user = await UserModel.find({email: email});
 
     if (!user) {
-      return res.status(404).send();
+      return res.status(404).send(notFoundError(404, 'Data Not Found Error'));
     }
 
     res.send(user);
   } catch (e) {
-    res.status(500).send();
+    res.status(500).send(internalServerError(500, e));
   }
 });
 

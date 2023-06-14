@@ -1,13 +1,25 @@
 /* eslint-disable max-len */
 const express = require('express');
-const UserModel = require('../models/userModel');
+const dotenvConfig = require('dotenv').config();
+const UserModel = require('../models/UserModel/userModel');
 const router = new express.Router();
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const {badRequestError} = require('./../utils/customHttpMessages');
 
 
 router.post('/login', async (req, res) => {
-  const user = await UserModel.find({email: req.body.email});
+  let queryFilter='NA';
+  if (req.body?.email) {
+    queryFilter={email: req.body.email};
+  } else if (req.body?.UID) {
+    queryFilter={UID: req.body.UID};
+  } else if (req.body.phoneNumber) {
+    queryFilter={phoneNumber: req.body.phoneNumber};
+  } else {
+    return res.status(400).send(badRequestError('Please Enter Valid Credentials'));
+  }
+  const user = await UserModel.find(queryFilter);
   let isValidPassword = null;
   if (user[0]?.password) {
     isValidPassword = bcrypt.compareSync(req?.body?.password, user[0]?.password);
@@ -16,7 +28,7 @@ router.post('/login', async (req, res) => {
     if (!user[0]?.email || !isValidPassword) {
       res.status(404).send({'Error-Message': 'invalid credentials'});
     } else {
-      const token = jwt.sign({email: user[0]?.email, password: user[0]?.password}, 'shhhhh', {expiresIn: '15s'});
+      const token = jwt.sign({email: user[0]?.email, password: user[0]?.password}, dotenvConfig.parsed.JWT_SECRECT, {expiresIn: dotenvConfig.parsed.JWT_EXPIRY});
       const authenticationResponse = {
         'authenticationStatus': true,
         'Access-Token': token,
@@ -29,9 +41,9 @@ router.post('/login', async (req, res) => {
 });
 
 router.post('/verifyToken', async (req, res) => {
-  const token = req.body.token;
+  const token = req.body.accessToken;
   try {
-    const verifiedToken = jwt.verify(token, 'shhhhh');
+    const verifiedToken = jwt.verify(token, dotenvConfig.parsed.JWT_SECRECT);
     if (verifiedToken?.email) {
       const tokenVerificationStatus = {
         'isTokenValid': true,

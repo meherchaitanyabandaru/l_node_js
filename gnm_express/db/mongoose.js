@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
+const dotenvConfig = require('dotenv').config();
 
-mongoose.connect('mongodb+srv://admin:111@cluster0.mkzoh.mongodb.net/?retryWrites=true&w=majority', {
 
-});
+mongoose.connect(dotenvConfig.parsed.MONGODB_URL, {});
 
 

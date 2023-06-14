@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 const TaskModel = require('../models/taskModel');
-const {paginatedResults} = require('../utils/pagination');
+const {paginatedResults} = require('../middlewares/pagination');
 
 
 const createNewTask = ('/tasks', async (req, res) => {
@@ -15,11 +15,10 @@ const createNewTask = ('/tasks', async (req, res) => {
 });
 
 
-const getAllTasks = ('/tasks', paginatedResults(TaskModel), async (req, res) => {
+const getAllTasks = ('/tasks', async (req, res) => {
   try {
-    const tasks = await TaskModel.find({});
-    res.send(tasks);
-    res.json(res.paginatedResults);
+    const tasks= await paginatedResults(TaskModel, req);
+    res.json(tasks);
   } catch (e) {
     res.status(500).send();
   }

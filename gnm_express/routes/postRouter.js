@@ -1,11 +1,13 @@
 const express = require('express');
 const router = new express.Router();
 const postController = require('../controllers/postController');
+const {verifyToken, isAdmin} =
+require('../middlewares/authJwt');
 
 router.route('/')
-    .post(postController.createNewPost)
-    .get(postController.getAllPosts)
-    .patch(postController.updatePost)
+    .post(verifyToken, postController.createNewPost)
+    .get(isAdmin, postController.getAllPosts)
+    .patch(isAdmin, postController.updatePost)
     .delete(postController.deletePost);
 
 router.route('/:id')
