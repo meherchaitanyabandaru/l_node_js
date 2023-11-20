@@ -7,16 +7,21 @@ require('../utils/customHttpMessages');
 
 
 verifyToken = (req, res, next) => {
+  // Extract the token from the request headers
   const token = req?.headers?.authorization?.replace('Bearer ', '');
 
+  // If no token is provided, return a forbidden error
   if (!token) {
     return res.status(403).send(forbiddenError('No token provided!'));
   }
 
+  // Verify the token using the JWT library and the secret key from the environment variables
   jwt.verify(token, dotenvConfig.parsed.JWT_SECRECT, (err, decoded) => {
+    // If there's an error while verifying the token, return an unauthorized error
     if (err) {
       return res.status(401).send(unAuthorisedError('User Session got Expired / Invalid Token, Please login again..!'));
     }
+    // If the token is valid, extract the email from the decoded token and attach it to the request object
     req.email = decoded.email;
     next();
   });

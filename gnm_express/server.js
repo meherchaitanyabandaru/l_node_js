@@ -64,3 +64,5 @@ const httpsServer = https.createServer(credentials, app);
 
 httpServer.listen(8080);
 httpsServer.listen(8443);
+
+module.exports = app;
