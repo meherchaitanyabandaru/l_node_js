@@ -23,8 +23,7 @@ async function checkConnection() {
     });
 
     // Close the connection
-    // mongoose.connection.close();
-    
+    mongoose.connection.close();
   } catch (err) {
     console.error('❌ Error:', err);
   }

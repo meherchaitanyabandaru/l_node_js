@@ -9,6 +9,7 @@ const {badRequestError} = require('./../utils/customHttpMessages');
 
 
 router.post('/login', async (req, res) => {
+  console.log(req.body)
   let queryFilter='NA';
   if (req.body?.email) {
     queryFilter={email: req.body.email};
@@ -19,16 +20,21 @@ router.post('/login', async (req, res) => {
   } else {
     return res.status(400).send(badRequestError('Please Enter Valid Credentials'));
   }
+  console.log("Meher login started")
   const user = await UserModel.find(queryFilter);
+  
   let isValidPassword = null;
   if (user[0]?.password) {
     isValidPassword = bcrypt.compareSync(req?.body?.password, user[0]?.password);
   }
+  console.log("Meher login ended",!user[0]?.email || !isValidPassword)
   try {
     if (!user[0]?.email || !isValidPassword) {
       res.status(404).send({'Error-Message': 'invalid credentials'});
     } else {
+      console.log("token meher")
       const token = jwt.sign({email: user[0]?.email, password: user[0]?.password}, dotenvConfig.parsed.JWT_SECRECT, {expiresIn: dotenvConfig.parsed.JWT_EXPIRY});
+     console.log("token meher",token)
       const authenticationResponse = {
         'authenticationStatus': true,
         'Access-Token': token,

@@ -20,7 +20,7 @@ CMD [ "node", "server.js" ]
 # sudo docker build -t expressimg .
 
 # Run Docker Container using created image
-# docker run -d -p 3000:3000 expressimg
+# 
 
 
 
