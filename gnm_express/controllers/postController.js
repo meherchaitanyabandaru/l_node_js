@@ -24,6 +24,8 @@ const getAllPosts = ('/posts', async (req, res) => {
   }
 });
 
+// sample code modified to test the github
+
 
 const getPost = ('/posts/:id', async (req, res) => {
   const _id = req.params.id;
